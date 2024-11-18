@@ -301,6 +301,73 @@ void list_torns(vector<master_stat> players)
     cout << endl;
 }
 
+string ask_name()
+{
+    string name;
+    cout << "What letter does the players name start with? \n";
+    cin >> name;
+    if(name.length() != 1) 
+    {
+        cout << "Please enter a single letter or number\n";
+        return ask_name();
+    } else {
+        return name;
+    }
+}
+
+
+int num_check(int range)
+{
+    cout << "Please select the number you would like to search: " ;
+    int pos;
+    cin >> pos;
+    if(cin.fail()) 
+    {
+        cin.clear();
+        cin.ignore(256,'\n');
+        cout << "That number is not an option please try agian" << endl;
+        return num_check(range);
+    } else if (pos > 0 && pos <= range) {
+        return pos - 1;
+    } else {
+        cout << "That number is not an option please try agian" << endl;
+        return num_check(range);
+    }
+}
+
+
+string find_player(vector<master_stat> players)
+{
+    string name = ask_name();
+    cout << name << endl;
+    vector<string> names;
+    for(int x = 0; x < players.size(); x++)
+    {
+        if(toupper((players[x].name)[0]) == toupper(name[0]))
+        {
+            names.push_back(players[x].name);            
+        }
+    }
+
+    cout << "Searchable players are: \n";
+    for(int x = 0; x < names.size(); x++)
+    {
+        cout << names[x] << " [" << x + 1 << "]\n";
+    }
+    //int pos = psearch(names);
+    int pos = num_check(names.size());
+    return names[pos];
+}
+
+
+
+
+
+//Complete function to serach for players
+void search()
+{
+
+};
 
 int main() {
     // Raw file intake data
@@ -315,12 +382,30 @@ int main() {
     data_trim(data, players);
     players.erase(players.begin());
 
+
+    string name = find_player(players);
+    cout << "The player you picked is " << name << endl;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
     /*
     for(int a = 0; a < int (players.size()); a++)
     {
         cout << "Player name is: " << players[a].name  << endl;
     }
-    */
+    
     
     cout << players[0].name << endl;
 
@@ -334,7 +419,7 @@ int main() {
     cout << players[0].tournaments[2].stages[1].mtypes[0].stats.rounds << endl;
 
     // Test code to print every line of "Data"
-    /*
+    
     for (const auto& row : data) {
         for (const auto& cell : row) {
             cout << cell << " ";
